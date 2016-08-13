@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>SPA</title>
+    <link rel="stylesheet" type="text/css" href="styles/index.css">
+    <script src="http://ajax.googleapis.com/ajax/libs/angularjs/1.4.9/angular.js"></script>
+    <script src="js/index.js" type="text/javascript" charset="utf-8"></script>
+  </head>
+  <body ng-app="myApp" ng-controller="myCtrl">
+    <div id="container">
+      <input type="submit" ng-show="!showUsers" ng-click="toggleDivs()" value="Show Users">
+      <input type="submit" ng-show="showUsers" ng-click="toggleDivs()" value="Hide Users">
+
+      <div ng-show="!showUsers">
+        <h1>Hello world</h1>
+      </div>
+
+      <div ng-show="showUsers">
+        <ul>
+          <li ng-repeat="user in users">{{user.email}}, id: {{user.id}}</li>
+        </ul>
+        <input type="text" ng-model="newEmail">
+        <input type="submit" ng-click="addEmail()">
+        <input type="submit" ng-click="deleteEmail()" value="Delete">
+        <div ng-show="errors">
+          <p class="errors">{{errors}}</p>
+        </div>
+      </div>
+    </div>
+  </body>
+</html>
