@@ -1,16 +1,45 @@
 var app = angular.module('myApp', []);
 app.controller('myCtrl', function($scope, $http) {
-  $scope.showUsers = false;
+  $scope.showForm = true;
+  $scope.showSignIn = true;
 
-  $http.get("users").then(loadUsers);
+  $http.get('/access').then(showContent);
 
-  $scope.addEmail = function() {
-    $scope.errors = '';
-    $http.post('/users', { user: { email: $scope.newEmail, password: 'password' } }).then(callbackAddFunction);
+  $scope.submitSignUpForm = function() {
+    $scope.formErrors = '';
+    $http.post('/sign_up', { user: { email: $scope.emailInput, password: $scope.passwordInput } }).then(signInCallback);
   };
 
-  $scope.deleteEmail = function() {
-    $http.delete('/users/' + $scope.users[$scope.users.length - 1].id).then(callbackDeleteFunction);
+  $scope.submitSignInForm = function() {
+    $scope.formErrors = '';
+    $http.put('/sign_in', { user: { email: $scope.emailInput, password: $scope.passwordInput } }).then(signInCallback);
+  };
+
+  $scope.signOut = function() {
+    $http.delete('/sign_out').then(() => { $scope.showForm = true });
+  };
+
+  $scope.toggleForms = function() {
+    $scope.showSignIn = !$scope.showSignIn;
+  };
+
+  function signInCallback(response) {
+    if (response.data.id != 0) {
+      $scope.showForm = false;
+      $http.get("users").then(loadUsers);
+    }
+    $scope.emailInput = '';
+    $scope.passwordInput = '';
+    $scope.formErrors = response.data.errors;
+  };
+
+  function showContent(response) {
+    if(response.data.id != 0 ) {
+      $scope.showForm = false;
+      $http.get("users").then(loadUsers);
+    } else {
+      $scope.showForm = true;
+    }
   };
 
   function loadUsers(response) {
@@ -20,22 +49,5 @@ app.controller('myCtrl', function($scope, $http) {
         email: user.email
       }
     });
-  };
-
-  $scope.toggleDivs = function() {
-    $scope.showUsers = !$scope.showUsers;
-  }
-
-  function callbackAddFunction(response) {
-    if (response.data.id != 0) {
-      $scope.users.push({ id: response.data.id, email: $scope.newEmail });
-    } else {
-      $scope.errors = response.data.errors
-    }
-    $scope.newEmail = '';
-  };
-
-  function callbackDeleteFunction(response) {
-    $scope.users.splice(-1,1);
   };
 });

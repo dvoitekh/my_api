@@ -8,23 +8,27 @@
   </head>
   <body ng-app="myApp" ng-controller="myCtrl">
     <div id="container">
-      <input type="submit" ng-show="!showUsers" ng-click="toggleDivs()" value="Show Users">
-      <input type="submit" ng-show="showUsers" ng-click="toggleDivs()" value="Hide Users">
-
-      <div ng-show="!showUsers">
-        <h1>Hello world</h1>
+      <div ng-show="showForm">
+        <div>
+          <input type="text" ng-model="emailInput" placeholder="email">
+          <br>
+          <input type="text" ng-model="passwordInput" placeholder="password">
+          <br>
+          <input type="submit" ng-show="showSignIn" ng-click="submitSignInForm()" value="Sign in">
+          <input type="submit" ng-show="!showSignIn" ng-click="submitSignUpForm()" value="Sign up">
+          <p class="errors">{{formErrors}}</p>
+        </div>
+        <div style="float: right">
+          <input type="submit" ng-show="!showSignIn" ng-click="toggleForms()" value="Sign in">
+          <input type="submit" ng-show="showSignIn" ng-click="toggleForms()" value="Sign up">
+        </div>
       </div>
 
-      <div ng-show="showUsers">
+      <div ng-show="!showForm">
+        <input type="submit" ng-click="signOut()" value="Sign out">
         <ul>
           <li ng-repeat="user in users">{{user.email}}, id: {{user.id}}</li>
         </ul>
-        <input type="text" ng-model="newEmail">
-        <input type="submit" ng-click="addEmail()">
-        <input type="submit" ng-click="deleteEmail()" value="Delete">
-        <div ng-show="errors">
-          <p class="errors">{{errors}}</p>
-        </div>
       </div>
     </div>
   </body>
