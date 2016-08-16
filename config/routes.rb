@@ -1,6 +1,6 @@
 Rails.application.routes.draw do
   root to: 'home#index'
-  
+
   get 'access', to: 'home#access'
   get 'users', to: 'users#index'
   put 'sign_in', to: 'users#sign_in'
