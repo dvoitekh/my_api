@@ -4,6 +4,10 @@ html, body {
   font-size: 14px;
 }
 
+[ng\:cloak], [ng-cloak], .ng-cloak {
+  display: none !important;
+}
+
 #container {
   width: 75%;
   margin: 0 auto;
